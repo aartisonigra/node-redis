@@ -130,13 +130,13 @@ export type MetricInstruments = Readonly<{
   dbClientOperationDuration: Histogram<Attributes>;
 
   // Connection Basic metrics
-  dbClientConnectionCount: UpDownCounter<Attributes>;
+  redisClientConnectionCount: ObservableGauge<Attributes>;
   dbClientConnectionCreateTime: Histogram<Attributes>;
   redisClientConnectionRelaxedTimeout: UpDownCounter<Attributes>;
   redisClientConnectionHandoff: Counter<Attributes>;
 
   // Connection Advanced metrics
-  dbClientConnectionPendingRequests: ObservableGauge<Attributes>;
+  // dbClientConnectionPendingRequests: disabled until naming/behavior is settled
   dbClientConnectionWaitTime: Histogram<Attributes>;
   redisClientConnectionClosed: Counter<Attributes>;
 
@@ -154,7 +154,7 @@ export type MetricInstruments = Readonly<{
   redisClientCscRequests: Counter<Attributes>;
   redisClientCscItems: ObservableGauge<Attributes>;
   redisClientCscEvictions: Counter<Attributes>;
-  redisClientCscNetworkSaved: Counter<Attributes>;
+  // redisClientCscNetworkSaved: disabled until payload size is tracked at socket layer
 }>;
 
 export const OTEL_ATTRIBUTES = {
@@ -232,7 +232,7 @@ export const METRIC_NAMES = {
   dbClientOperationDuration: "db.client.operation.duration",
 
   // Connection metrics
-  dbClientConnectionCount: "db.client.connection.count",
+  redisClientConnectionCount: "redis.client.connection.count",
   dbClientConnectionCreateTime: "db.client.connection.create_time",
   redisClientConnectionRelaxedTimeout:
     "redis.client.connection.relaxed_timeout",
@@ -257,7 +257,7 @@ export const METRIC_NAMES = {
   redisClientCscRequests: "redis.client.csc.requests",
   redisClientCscItems: "redis.client.csc.items",
   redisClientCscEvictions: "redis.client.csc.evictions",
-  redisClientCscNetworkSaved: "redis.client.csc.network_saved",
+  // redisClientCscNetworkSaved: disabled until payload size is tracked at socket layer
 } as const;
 
 export type BaseInstrumentConfig = {
